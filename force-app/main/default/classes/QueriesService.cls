@@ -1,19 +1,9 @@
 public with sharing class QueriesService {
     public static String AccountsWithoutTasks() {
-        // Create a set of Accounts with no Tasks and no orders
-        List<Task> ts = [
-            SELECT Id, WhatId FROM Task
-            WHERE what.type = 'Account'];
-        Set<Id> accountsIdsWithTask = new Set<Id>();
-        for (Integer i = 0; i < ts.size(); i++) {
-            accountsIdsWithTask.add(ts[i].WhatId);
-        }
-        List<Account> accts = [
-            SELECT Id FROM Account 
-            WHERE Id NOT IN :accountsIdsWithTask
-            AND Id NOT IN (SELECT AccountId FROM Order)];
-        
-        return 'SELECT Id FROM Account WHERE Id NOT IN \'accountsIdsWithTask\' AND Id NOT IN (SELECT AccountId FROM Order)'; 
+        String query = 'SELECT Id, OwnerId,';
+               query+= '(SELECT Id FROM Tasks Where Status = \'Nouvelle\')';
+               query+= 'FROM Account WHERE Id NOT IN (SELECT AccountId FROM Order)';
+        return query; 
     }
     public static List<Account> AccountsWithOrders(Set<Id> setAccountIds) {
         List<Account> accts = [
