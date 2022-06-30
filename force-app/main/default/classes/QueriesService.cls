@@ -1,7 +1,7 @@
 public with sharing class QueriesService {
     public static String AccountsWithoutTasks() {
         String query = 'SELECT Id, OwnerId,';
-               query+= '(SELECT Id FROM Tasks Where Status = \'Nouvelle\')';
+               query+= '(SELECT Id FROM Tasks Where Type = \'Call\')';
                query+= 'FROM Account WHERE Id NOT IN (SELECT AccountId FROM Order)';
         return query; 
     }

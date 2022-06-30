@@ -11,6 +11,7 @@ public with sharing class TestBatchProcess {
         Test.stopTest();
         
         Task tsk = [SELECT Status, WhatId FROM Task WHERE WhatId = :accts[0].Id];
+        System.assertEquals(0, accts[0].Orders.size());
         System.assertNotEquals(null, tsk);
         System.assertEquals('Nouvelle', tsk.Status);
 

@@ -15,7 +15,9 @@ public with sharing class TaskUtilies {
                 tskList.add(tsk);
             }
         }
-        insert tskList;
+        if (tskList.size() > 0) {
+            insert tskList;
+        }
         return tskList;
     }
 }
