@@ -3,12 +3,12 @@ private with sharing class TestOrderTrigger {
     static List<Order> orders = new List<Order>();
     static List<Account> accts = new List<Account>();
     @TestSetup
-    static void makeData(){
+    static void setUpPerTest(){
         accts = TestDataFactory.createAccounts(1);
         orders= TestDataFactory.createOrders(accts, 1, 10);
     }
     @IsTest
-    static void ActivateOrderStatusTest(){
+    static void activateOrderStatusTest(){
         orders = [SELECT Status, (SELECT Id FROM OrderItems) FROM Order]; 
         orders[0].Status = 'Activated';
         Test.startTest();
@@ -25,18 +25,18 @@ private with sharing class TestOrderTrigger {
     }
 
     @IsTest
-    static void UncheckedActivatedBoxTest(){
+    static void uncheckedActivatedBoxTest(){
         Account acct = [SELECT Active__c, (SELECT Id FROM Orders) FROM Account];
         acct.Active__c = true;
         Order ord = acct.orders[0];
-        System.debug('>>>order: '+ord);
         Test.startTest();
         update acct;
         delete ord;
         Test.stopTest();
-        System.debug('>>> acount active: '+ acct.Orders);
-        //System.assertEquals(0, acct.Orders.size());
-        System.assertEquals(false, acct.Active__c);
+
+        Account acctupdated = [SELECT Active__c, (SELECT Id FROM Orders) FROM Account];
+        System.assertEquals(0, acctupdated.Orders.size());
+        System.assertEquals(false, acctupdated.Active__c);
         
     }
 }
