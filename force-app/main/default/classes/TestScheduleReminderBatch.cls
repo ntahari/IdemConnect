@@ -12,9 +12,7 @@ private class TestScheduleReminderBatch {
      */
 	@IsTest
 	static void testScheduledJob() {
-
 		Test.startTest();
-
 		String jobId = System.schedule('ScheduleApexTest',CRON_EXP,new ScheduleReminderBatch());
 		Test.stopTest();
 
