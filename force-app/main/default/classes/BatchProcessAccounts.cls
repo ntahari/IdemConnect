@@ -2,7 +2,8 @@ global class BatchProcessAccounts implements Database.Batchable<sObject> {
     global Database.QueryLocator start(Database.BatchableContext info){ 
         //Requeter seulement les comptes qui ont au moins une commande avec le Status 'Ordered'
         Set<Id> taskWhatIDs = new Set<Id>();
-        for (Task t : [SELECT WhatId FROM Task WHERE What.type = 'Account']) {
+        for (Task t : [SELECT WhatId FROM Task WHERE What.type = 'Account'
+                       AND Subject != 'Call']) {
             taskWhatIDs.add(t.whatId);
         }
         return Database.getQueryLocator([SELECT Id, OwnerId FROM Account 
